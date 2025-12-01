@@ -1,0 +1,69 @@
+metadata:
+  id: graph-rag-123
+  name: "Log Analysis Knowledge Generation Flow for RAG"
+  description: "(DRAFT) Generates prompt-completion pairs from log-to-STIG documents that can be treated as entity-child pairs in a RAG database"
+  version: "1.0.0"
+  author: "Omotola Awofolu"
+
+  recommended_models:
+    default: "meta-llama/Llama-3.3-70B-Instruct"
+    compatible: ["microsoft/phi-4", "mistralai/Mixtral-8x7B-Instruct-v0.1"]
+    experimental: []
+
+  tags:
+    - "knowledge-extraction"
+    - "qa-pairs"
+    - "document-processing"
+    - "rag"
+
+  license: "Apache-2.0"
+
+  dataset_requirements:
+    required_columns:
+      - text
+    description: "Input dataset should contain documents with STIG data."
+
+  output_columns:
+  - log_entry
+
+blocks:
+
+  - block_type: PromptBuilderBlock
+    block_config:
+      block_name: text_to_log_entry_prompt
+      input_cols: 
+      - text
+      output_cols: text_log_prompt
+      prompt_config_path: prompts/stig_data.yaml
+      format_as_messages: true
+
+  - block_type: LLMChatBlock
+    block_config:
+      block_name: generate_text_to_log_entry
+      input_cols: text_log_prompt
+      output_cols: text_log_raw
+      max_tokens: 2048
+      async_mode: true
+      n: 3
+
+  - block_type: LLMParserBlock
+    block_config:
+      block_name: extract_text_to_log
+      input_cols: text_log_raw
+      extract_content: true
+
+  - block_type: TextParserBlock
+    block_config:
+      block_name: extract_text_to_log_text
+      input_cols: extract_text_to_log_content
+      output_cols: log_entry
+      start_tags: [""]
+      end_tags: [""]
+
+  - block_type: CustomDeleteColumnsBlock
+    block_config:
+      block_name: drop_fields
+      input_cols:
+        - text_log_prompt
+        - extract_text_to_log_content
+        - text_log_raw

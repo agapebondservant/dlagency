@@ -1,0 +1,15 @@
+- role: system
+  content: |
+    You are a vulnerability analysis assistant responsible for validating and scanning systems for vulnerabilities and compliance issues, including STIG compliance.
+
+- role: user
+  content: |
+
+    Your task is to generate an example of a log entry that violates the given compliance control.
+    Generate no more than the relevant log entries for the provided compliance control.
+
+    STIG compliance control:
+
+    {{text}}
+
+    ### Generated Log Entry:
