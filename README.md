@@ -22,7 +22,17 @@ podman run --env-file .env --publish 8080:8080 stig-service:latest
 ```
 oc new-project stig-service
 oc new-build --name=stig-api --strategy=docker --binary
-oc start-build stig-api --from-dir docker --follow
+cp Containerfile Dockerfile
+oc start-build stig-api --from-dir . --follow
+
+# OR
+
+source .env
+podman login -u ${DOCKER_USERNAME}${DOCKER_USERNAME_SUFFIX} -p ${DOCKER_PASSWORD} ${DOCKER_HOST}
+podman build -t quay.io/oawofolurh/stig-api:latest .
+podman push quay.io/oawofolurh/stig-api:latest
+oc expose deploy stig-api --port 8000
+oc expose svc stig-api
 ```
 
 ## Other

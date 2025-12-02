@@ -6,7 +6,7 @@ from urllib.parse import parse_qs
 from dotenv import load_dotenv
 load_dotenv()
 
-app = FastAPI(title="STIG Data API")
+app = FastAPI(title="STIG RAG API")
 
 endpoint_url = os.getenv("AWS_S3_ENDPOINT")
 
