@@ -11,3 +11,8 @@ pytesseract==0.3.13
 jsonpath_ng==1.7.0
 validators==0.35.0
 fastapi[standard]
+gunicorn
+boto3
+langchain_openai
+langchain_community
+langchain

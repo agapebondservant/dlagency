@@ -27,8 +27,7 @@ data_model = StigDataModel(endpoint_url=endpoint_url,
                      table_name=table_name)
 
 # Query documents by logs
-# @app.post("/stigs/query", response_class=PlainTextResponse)
-@app.post("/stigs/query")
+@app.post("/stig-logs")
 async def find_documents_by_logs(logs: str):
     """
     Handles querying documents based on provided logs.
@@ -36,7 +35,7 @@ async def find_documents_by_logs(logs: str):
     Returns:
         The documents matching the query, represented as a plain text response.
     """
-
+    print(logs)
 
     return PlainTextResponse(content=data_model.run_query({
         "prompt": logs

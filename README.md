@@ -36,6 +36,18 @@ oc expose deploy stig-api --port 8000
 oc expose svc stig-api
 ```
 
+## Run RAG API on RHEL
+```
+sudo dnf update -y
+sudo dnf install python3 git -y
+git clone https://github.com/agapebondservant/dlagency.git
+cd dlagency/api
+python3 -m venv venv
+source venv/bin/activate
+pip3 install -r requirements.txt
+uvicorn stigservice:app --reload --host 0.0.0.0 --port 8000
+```
+
 ## Other
 1. Sample Github repository GitHub repository containing a dataset for assessing a web server's compliance with national cybersecurity agency requirements related to Transport Layer Security (TLS)
 https://zenodo.org/records/15011611

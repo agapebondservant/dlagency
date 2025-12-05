@@ -8,7 +8,6 @@ from langchain_core.documents import Document
 from lancedb.rerankers import LinearCombinationReranker
 from langchain_openai import OpenAIEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter, MarkdownHeaderTextSplitter
-from langchain.docstore.document import Document
 from langchain_core.prompts import ChatPromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate
 import lancedb
 from langchain_community.embeddings import HuggingFaceEmbeddings, SentenceTransformerEmbeddings

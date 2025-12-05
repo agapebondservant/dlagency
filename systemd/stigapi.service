@@ -1,0 +1,12 @@
+    [Unit]
+    Description=STIG Data API
+    After=network.target
+
+    [Service]
+    User=ec2-user
+    WorkingDirectory=/path/to/my_fastapi_app
+    ExecStart=/path/to/my_fastapi_app/venv/bin/gunicorn --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 main:app
+    Restart=always
+
+    [Install]
+    WantedBy=multi-user.target
