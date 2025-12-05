@@ -132,6 +132,39 @@ class StigDataModel:
             traceback.print_exc()
             return []
 
+    def update_logs_by_rule_id(self, rule_id: str, new_logs: str) -> str :
+        """
+        Updates the logs associated with a given rule ID in the system.
+
+        Args:
+            rule_id: The identifier of the rule whose associated logs should be updated.
+            new_logs: The new logs to associate with the rule.
+        Returns:
+            A flag indicating whether the log update operation
+            was successful.
+        """
+        if not rule_id or not new_logs:
+            print("ERROR: 'rule_id' and 'new_logs' are required parameters")
+
+        try:
+
+            table = self.db.open_table(self.table_name)
+
+            print(f"Updating logs for rule ID={rule_id}...")
+
+            success = table.update(
+                where=f"text LIKE '%{rule_id}%'", # TODO: use indexed id column
+
+                values={"log_entry": new_logs}
+            )
+
+            return "SUCCESS" if int(success) else "ERROR"
+
+        except Exception as e:
+            print(f"Error updating logs: {e}")
+
+            traceback.print_exc()
+
 
     def run_query(self, body: dict) -> str:
         """

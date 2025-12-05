@@ -1,8 +1,7 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, HTTPException
 from fastapi.responses import PlainTextResponse
 from stig_data_model import StigDataModel
 import os
-from urllib.parse import parse_qs
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -28,20 +27,39 @@ data_model = StigDataModel(endpoint_url=endpoint_url,
                      table_name=table_name)
 
 # Query documents by logs
-@app.post("/stigs/query", response_class=PlainTextResponse)
-async def find_documents_by_logs(request: Request):
+# @app.post("/stigs/query", response_class=PlainTextResponse)
+@app.post("/stigs/query")
+async def find_documents_by_logs(logs: str):
     """
     Handles querying documents based on provided logs.
 
     Returns:
         The documents matching the query, represented as a plain text response.
     """
-    query_string = request.scope["query_string"].decode("utf-8")
 
-    parsed_query = parse_qs(query_string)
-
-    logs = parsed_query.get("logs", [""])[0]
 
     return PlainTextResponse(content=data_model.run_query({
         "prompt": logs
     }))
+
+@app.patch("/stigs/{rule_id}")
+async def update_logs_by_rule_id(rule_id: str, logs: str):
+    """
+    Updates logs associated with the given rule ID.
+
+    Args:
+        rule_id: The identifier of the rule whose logs need to be updated.
+        logs: The updated logs to be associated with the specified rule.
+    Returns:
+        Text response containing the result of the log update operation.
+    """
+    response = data_model.update_logs_by_rule_id(
+        rule_id, logs)
+
+    if not response:
+        raise HTTPException(status_code=404, detail=f"Rule ID {rule_id} "
+                                                    f"could not be updated.")
+
+    return PlainTextResponse(content=data_model.update_logs_by_rule_id(
+        rule_id, logs)
+    )

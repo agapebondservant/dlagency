@@ -12,6 +12,7 @@ uvicorn stigservice:app --reload
 ## Run RAG API via Podman
 Run the API via Podman:
 ```
+source .env
 podman build -t stig-service:latest .
 podman run --env-file .env --publish 8080:8080 stig-service:latest
 # View Swagger at http://<hostname>:8080/docs
