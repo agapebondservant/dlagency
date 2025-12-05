@@ -152,7 +152,7 @@ class StigDataModel:
             print(f"Updating logs for rule ID={rule_id}...")
 
             success = table.update(
-                where=f"text LIKE '%{rule_id}%'", # TODO: use indexed id column
+                where=f"text LIKE '%**Rule ID:** `{rule_id}`%'", # TODO: use indexed id column
 
                 values={"log_entry": new_logs}
             )
