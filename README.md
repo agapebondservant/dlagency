@@ -1,5 +1,14 @@
 # STIG Log Analysis POC
 
+## Update env
+    1. Update .env-template file as appropriate
+    2. Rename .env-template to .env
+    3. Run
+    ```
+    source .env
+    cp .env api/.env
+    ```
+
 ## RUN RAG API locally (without Podman)
 ```
 pip install -r fastapi[standard]
